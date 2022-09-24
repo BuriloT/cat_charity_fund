@@ -18,7 +18,8 @@ router = APIRouter()
 @router.post(
     '/',
     response_model_exclude_none=True,
-    response_model=DonationLimitedDB
+    response_model=DonationLimitedDB,
+    dependencies=[Depends(current_user)],
 )
 async def create_donation(
         donation: DonationCreate,
@@ -50,6 +51,7 @@ async def get_all_donations(
     '/my',
     response_model=List[DonationLimitedDB],
     response_model_exclude={'user_id'},
+    dependencies=[Depends(current_user)],
 )
 async def get_my_reservations(
         session: AsyncSession = Depends(get_async_session),
